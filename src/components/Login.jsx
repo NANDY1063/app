@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import favicon from "../assets/favicon.png";
 import "../App.css";
@@ -9,25 +8,10 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const form = { employeeNo, password };
-      console.log("====> Form Data:", form);
-
-      const response = await axios.post("http://localhost:5000/login",form);
-      console.log("Response:", response.data.data);
-
-      if (response.data.success) {
-        alert("Your login is successfully done!");
-        navigate("/dashboard");
-      } else {
-        alert("Invalid login credentials!");
-      }
-    } catch (error) {
-      console.error("Login Error:", error);
-      alert("Login failed. Please try again.");
-    }
+    console.log("Form Data:", { employeeNo, password });
+    alert("Login functionality is disabled.");
   };
 
   return (
@@ -40,7 +24,7 @@ const Login = () => {
 
         <span>Employee No:</span>
         <input
-          type="text" // Changed from tel to text
+          type="text"
           placeholder="Enter your employee number"
           value={employeeNo}
           onChange={(e) => setEmployeeNo(e.target.value)}

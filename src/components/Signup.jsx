@@ -1,6 +1,5 @@
 // src/components/Signup.js
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
 import favicon from "../assets/favicon.png";
 import "../App.css";
@@ -20,19 +19,14 @@ const Signup = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      console.log("====> Form Data:", form);
-      const response = await axios.post("http://localhost:5000/api/signup", form);
-      console.log("Response:", response.data);
-      alert("Your signup is successfully done!");
-      navigate("/login"); 
-    } 
-    catch (error) {
-      console.error("Signup Error:", error);
-      alert("Signup failed. Please try again.");
-    }
+    // Frontend validation or processing can be done here
+    console.log("Form Data:", form);
+
+    // Simulate a successful signup
+    alert("Your signup is successfully done!");
+    navigate("/login"); // Redirect to the login page
   };
 
   return (
