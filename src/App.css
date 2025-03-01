@@ -167,7 +167,6 @@ nav {
   transition: left 0.3s ease-in-out;
   overflow-y: auto;
   overflow-x: hidden;
-
 }
 .sidebar.open {
   left: 0;
@@ -191,6 +190,7 @@ nav {
   font-size: 13px;
   text-align: left; 
 }
+
 .dropdown {
   position: relative;
   text-align: left;

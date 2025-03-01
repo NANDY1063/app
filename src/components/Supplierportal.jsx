@@ -119,7 +119,7 @@ const SupplierPortal = () => {
             className="btn btn-outline-success"
             onClick={handleAddSectionClick}
           >
-            Add Section
+            Add Supplier
           </button>
         </div>
       </nav>

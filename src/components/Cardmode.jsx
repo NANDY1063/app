@@ -102,7 +102,7 @@ const Cardmode = () => {
             className="btn btn-outline-success"
             onClick={handleAddCardMode}
           >
-            Add Section
+            Add Card mode
           </button>
         </div>
       </nav>
