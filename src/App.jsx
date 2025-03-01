@@ -11,6 +11,15 @@ import Report from './components/Report';
 import CardMode from './components/Cardmode';
 import SupplierPortal from "./components/Supplierportal";
 import Pricerange from "./components/Pricerange"; 
+import Eancode from "./components/Eancode";
+import ModeCategory from "./components/ModeCategory"; 
+import Hsn from "./components/Hsncode";
+import Design from "./components/Designcode";
+import Paymentmachine from "./components/Paymentmachine";
+import Transport from "./components/Transport";
+import Brand from "./components/Brand";
+import Role from "./components/Role";
+import Branch from "./components/Branch";
 import "./App.css";
 
 const App = () => {
@@ -18,9 +27,8 @@ const App = () => {
     <Router>
       <div>
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Signup />} />
-          
+          <Route path="/login" element={<Login />} />
           <Route element={<LayoutWithSidebar />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/sidebar" element={<Sidebar />} />
@@ -29,6 +37,15 @@ const App = () => {
             <Route path="/masters/supplier" element={<SupplierPortal/>}/>
             <Route path="/masters/card-mode" element={<CardMode/>}/>
             <Route path="/masters/price-range" element={<Pricerange/>}/>
+            <Route path="/masters/mode-category" element={<ModeCategory/>}/>
+            <Route path="/masters/ean-code" element={<Eancode/>}/>
+            <Route path="/masters/hsn-code" element={<Hsn/>}/>
+            <Route path="/masters/design-code" element={<Design/>}/> 
+            <Route path="/masters/payment" element={<Paymentmachine/>}/>
+            <Route path="/masters/transport" element={<Transport/>}/>
+            <Route path="/masters/brand" element={<Brand/>}/>
+            <Route path="/masters/role" element={<Role/>}/> 
+            <Route path="/masters/branch" element={<Branch/>}/>
           </Route>
         </Routes>
       </div>
@@ -48,6 +65,15 @@ const LayoutWithSidebar = () => (
         <Route path="/masters/supplier" element={<SupplierPortal/>}/>
         <Route path="/masters/card-mode" element={<CardMode/>}/>
         <Route path="/masters/price-range" element={<Pricerange/>}/>
+        <Route path="/masters/mode-category" element={<ModeCategory/>}/>
+        <Route path="/masters/ean-code" element={<Eancode/>}/>
+        <Route path="/masters/hsn-code" element={<Hsn/>}/> 
+        <Route path="/masters/design-code" element={<Design/>}/>
+        <Route path="/masters/payment" element={<Paymentmachine/>}/>
+        <Route path="/masters/transport" element={<Transport/>}/>
+        <Route path="/masters/brand" element={<Brand/>}/>
+        <Route path="/masters/role" element={<Role/>}/> 
+        <Route path="/masters/branch" element={<Branch/>}/>
       </Routes>
     </div>
   </>

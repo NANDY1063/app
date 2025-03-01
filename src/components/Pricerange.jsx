@@ -6,31 +6,48 @@ const Pricerange = () => {
   const [price, setPrice] = useState("");
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
-  const [priceRanges, setPriceRanges] = useState([]);
+  const [addedPrices, setAddedPrices] = useState([]);
   const [submittedData, setSubmittedData] = useState([]);
+  const [error, setError] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
-  const handleAddPriceRange = () => {
-    if (priceFrom.trim() !== "" && priceTo.trim() !== "") {
-      const newRange = { priceFrom, priceTo };
-      setPriceRanges([...priceRanges, newRange]);
-      setPriceFrom("");
-      setPriceTo("");
+  const handleAddPrice = () => {
+    if (price.trim() !== "" && priceFrom.trim() !== "" && priceTo.trim() !== "") {
+      const priceValue = parseFloat(price);
+      const from = parseFloat(priceFrom);
+      const to = parseFloat(priceTo);
+
+      if (priceValue >= from && priceValue <= to) {
+        setAddedPrices([...addedPrices, price]);
+        setPrice("");
+        setError("");
+      } else {
+        setError("Price must fall within the specified range.");
+        setTimeout(() => setError(""), 3000); // Auto-hide error after 3 seconds
+      }
+    } else {
+      setError("Please fill in all fields.");
+      setTimeout(() => setError(""), 3000); // Auto-hide error after 3 seconds
     }
   };
 
   const handleSubmit = () => {
-    if (price.trim() !== "" && priceRanges.length > 0) {
+    if (addedPrices.length > 0 && priceFrom.trim() !== "" && priceTo.trim() !== "") {
       const newData = {
-        price,
-        priceRanges: [...priceRanges],
+        priceRange: `${priceFrom} - ${priceTo}`,
+        addedPrices: [...addedPrices],
       };
       setSubmittedData([...submittedData, newData]);
-      setPrice("");
-      setPriceRanges([]);
+      setAddedPrices([]);
+      setPriceFrom("");
+      setPriceTo("");
       setShowForm(false);
-      alert("Price details submitted successfully!");
+      setError("");
+      setShowAlert(true); // Show success alert
+      setTimeout(() => setShowAlert(false), 3000); // Auto-hide success alert after 3 seconds
     } else {
-      alert("Please fill in all fields.");
+      setError("Please add at least one price and specify a range.");
+      setTimeout(() => setError(""), 3000); // Auto-hide error after 3 seconds
     }
   };
 
@@ -39,7 +56,8 @@ const Pricerange = () => {
     setPrice("");
     setPriceFrom("");
     setPriceTo("");
-    setPriceRanges([]);
+    setAddedPrices([]);
+    setError("");
   };
 
   return (
@@ -56,10 +74,26 @@ const Pricerange = () => {
               Filter
             </button>
             <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#">Name</a></li>
-              <li><a className="dropdown-item" href="#">Created From</a></li>
-              <li><a className="dropdown-item" href="#">Created To</a></li>
-              <li><a className="dropdown-item" href="#">Active</a></li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Name
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Created From
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Created To
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Active
+                </a>
+              </li>
             </ul>
           </div>
           <button
@@ -72,82 +106,88 @@ const Pricerange = () => {
         </div>
       </nav>
 
-      {showForm && (
-        <div>
-          <div className="row">
-            <div className="card-column">
-              <h6>Price</h6>
-              <div className="form-group">
-                <label>Price:</label>
-                <input
-                  type="text"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  placeholder="Enter price"
-                />
-              </div>
-            </div>
-
-            <div className="card-column">
-              <h6>Price Range</h6>
-              <div className="form-group">
-                <label>Price From:</label>
-                <input
-                  type="text"
-                  value={priceFrom}
-                  onChange={(e) => setPriceFrom(e.target.value)}
-                  placeholder="From"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Price To:</label>
-                <input
-                  type="text"
-                  value={priceTo}
-                  onChange={(e) => setPriceTo(e.target.value)}
-                  placeholder="To"
-                />
-              </div>
-
-              <button className="btn btn-success" onClick={handleAddPriceRange}>
-                Add Range
-              </button>
-            </div>
-
-            {/* Column 3: Added Ranges Table */}
-            <div className="card-column">
-              <h6>Added Ranges</h6>
-              <table className="added-ranges-table">
-                <thead>
-                  <tr>
-                    <th>Price From</th>
-                    <th>Price To</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {priceRanges.map((range, index) => (
-                    <tr key={index}>
-                      <td>{range.priceFrom}</td>
-                      <td>{range.priceTo}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="bu-group">
-            <button className="btn btn-success" onClick={handleSubmit}>
-              Submit
-            </button>
-            <button className="btn btn-warning" onClick={handleCancel}>
-              Cancel
-            </button>
-          </div>
-            </div>
-          </div>
-
-        
+      {/* Success Alert */}
+      {showAlert && (
+        <div className="alert alert-success" role="alert">
+          Price details submitted successfully!
         </div>
       )}
+
+      {/* Error Alert */}
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
+
+      {showForm && (
+        <div className="card-row">
+          <div className="card-column">
+            <h6>Price Range</h6>
+            <div className="card-form-group">
+              <label>Price From:</label>
+              <input
+                type="text"
+                value={priceFrom}
+                onChange={(e) => setPriceFrom(e.target.value)}
+                placeholder="From"
+              />
+            </div>
+            <div className="card-form-group">
+              <label>Price To:</label>
+              <input
+                type="text"
+                value={priceTo}
+                onChange={(e) => setPriceTo(e.target.value)}
+                placeholder="To"
+              />
+            </div>
+          </div>
+
+          <div className="card-column">
+            <h6>Price</h6>
+            <div className="card-form-group">
+              <label>Price:</label>
+              <input
+                type="text"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="Enter price"
+              />
+            </div>
+            <button className="btn btn-outline-success" onClick={handleAddPrice}>
+              +
+            </button>
+          </div>
+
+          <div className="card-column">
+            <h6>Added Prices</h6>
+            <table className="added-ranges-table">
+              <thead>
+                <tr>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {addedPrices.map((price, index) => (
+                  <tr key={index}>
+                    <td>{price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="bu-group">
+              <button className="btn btn-success" onClick={handleSubmit}>
+                Submit
+              </button>
+              <button className="btn btn-warning" onClick={handleCancel}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {submittedData.length > 0 && (
         <div className="submitted-data">
           <h6>Submitted Data</h6>
@@ -155,27 +195,17 @@ const Pricerange = () => {
             <thead>
               <tr>
                 <th>S.No</th>
-                <th>Price</th>
-                <th>Price Range From</th>
-                <th>Price Range To</th>
+                <th>Price Range</th>
+                <th>Added Prices</th>
               </tr>
             </thead>
             <tbody>
               {submittedData.map((data, index) => (
-                <React.Fragment key={index}>
-                  {data.priceRanges.map((range, rangeIndex) => (
-                    <tr key={`${index}-${rangeIndex}`}>
-                      {rangeIndex === 0 && (
-                        <>
-                          <td rowSpan={data.priceRanges.length}>{index + 1}</td>
-                          <td rowSpan={data.priceRanges.length}>{data.price}</td>
-                        </>
-                      )}
-                      <td>{range.priceFrom}</td>
-                      <td>{range.priceTo}</td>
-                    </tr>
-                  ))}
-                </React.Fragment>
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{data.priceRange}</td>
+                  <td>{data.addedPrices.join(", ")}</td>
+                </tr>
               ))}
             </tbody>
           </table>

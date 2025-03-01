@@ -73,7 +73,7 @@ const ReportForm = ({ type, setReport }) => {
     </div>
 
     <div>
-      <div className="radio-group">
+      <div className="report-radio-group">
         <input type="radio" />
         <label>Group By Date</label>
         <input type="radio" />

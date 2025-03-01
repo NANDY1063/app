@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
+import axios from "axios"; // Import axios for API calls
 
 const InputField = ({ label, type, name, value, onChange, onBlur, readOnly, rows, as, ...props }) => {
-  const InputComponent = as || "input"; // Use 'textarea' if 'as' prop is provided
+  const InputComponent = as || "input";
   return (
     <div className="form-group">
       <label>{label}</label>
@@ -43,8 +42,9 @@ const SupplierPortal = () => {
     section: "",
     minOrderQty: "",
     transportation: "",
-    location: { lat: 11.0168, lng: 76.9558 }, // Default location (Coimbatore)
   });
+
+  const [showAlert, setShowAlert] = useState(false); // State for showing alert
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,103 +67,214 @@ const SupplierPortal = () => {
     }
   };
 
-  const handleMapClick = (event) => {
-    setFormData({
-      ...formData,
-      location: { lat: event.latLng.lat(), lng: event.latLng.lng() },
-    });
+  const handleAddSectionClick = () => {
+    console.log("Add Section clicked");
+    // Add logic for adding a section here
+  };
+
+  const handleSubmit = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Hide alert after 3 seconds
+    console.log("Form Data Submitted:", formData); // Log form data to console
   };
 
   return (
-    <div className="supp-container">
-      <div className="tcr">
-        <h5>Company Details</h5>
-      </div>
-      <div className="form-container">
-        {/* Company Details Section */}
-        <div className="form-grid">
-          <InputField label="Company Name" type="text" name="companyName" value={formData.companyName} onChange={handleChange} />
-          <InputField label="Supplier Name" type="text" name="name" value={formData.name} onChange={handleChange} />
-          <InputField label="Register No" type="text" name="registerNo" value={formData.registerNo} onChange={handleChange} />
-          <div className="form-group">
-            <label>Business Type</label>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name="businessType"
-                  value="wholesaler"
-                  checked={formData.businessType === "wholesaler"}
-                  onChange={handleChange}
-                />
-                Wholesaler
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="businessType"
-                  value="manufacturer"
-                  checked={formData.businessType === "manufacturer"}
-                  onChange={handleChange}
-                />
-                Manufacturer
-              </label>
-            </div>
+    <div>
+      <nav>
+        <h5>Supplier Portal</h5>
+        <div className="navleft">
+          <div className="btn-group">
+            <button
+              type="button"
+              className="btn btn-outline-secondary dropdown-toggle me-md-3"
+              data-bs-toggle="dropdown"
+            >
+              Filter
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <a className="dropdown-item" href="#">
+                  Name
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Created from
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Created To
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Active
+                </a>
+              </li>
+            </ul>
           </div>
-        </div>
-
-        {/* Address and Contact Section */}
-        <div className="form-grid">
-          <InputField label="Address" as="textarea" rows={2} name="address" value={formData.address} onChange={handleChange} />
-          <InputField label="State" type="text" name="state" value={formData.state} onChange={handleChange} />
-          <InputField label="District" type="text" name="district" value={formData.district} onChange={handleChange} />
-          <div className="form-group">
-            <InputField label="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
-            <button className="btn btn-secondary btn-sm mt-2">Verify Email</button>
-          </div>
-          <div className="form-group">
-            <InputField label="Phone" type="text" name="phone" value={formData.phone} onChange={handleChange} />
-            <button className="btn btn-secondary btn-sm mt-2">Verify Phone</button>
-          </div>
-        </div>
-
-        {/* Map Section */}
-        <h2>Locate on Map</h2>
-        <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-          <GoogleMap
-            mapContainerStyle={{ height: "300px", width: "100%", marginBottom: "20px" }}
-            center={formData.location}
-            zoom={15}
-            onClick={handleMapClick}
+          <button
+            type="button"
+            className="btn btn-outline-success"
+            onClick={handleAddSectionClick}
           >
-            <Marker position={formData.location} />
-          </GoogleMap>
-        </LoadScript>
-
-        {/* Bank Details Section */}
-        <h2>Bank Details</h2>
-        <div className="form-grid">
-          <InputField label="Account Holder Name" type="text" name="accHolderName" value={formData.accHolderName} onChange={handleChange} />
-          <InputField label="Account No" type="text" name="accNo" value={formData.accNo} onChange={handleChange} />
+            Add Section
+          </button>
         </div>
-        <div className="form-grid">
-          <InputField label="IFSC Code" type="text" name="ifscCode" value={formData.ifscCode} onBlur={fetchBankDetails} onChange={handleChange} />
-          <InputField label="Bank Name" type="text" name="bankName" value={formData.bankName} readOnly />
-          <InputField label="Branch" type="text" name="branch" value={formData.branch} readOnly />
-        </div>
+      </nav>
 
-        {/* Section Details */}
-        <h2>Section</h2>
-        <div className="form-grid">
-          <InputField label="Section" type="text" name="section" value={formData.section} onChange={handleChange} />
-          <InputField label="Min Order Qty" type="text" name="minOrderQty" value={formData.minOrderQty} onChange={handleChange} />
-          <InputField label="Transportation" type="text" name="transportation" value={formData.transportation} onChange={handleChange} />
+      <div className="form-container-supplier">
+        {showAlert && (
+          <div className="alert alert-success" role="alert">
+            Form submitted successfully!
+          </div>
+        )}
+        <h5>Company Details</h5>
+        <hr />
+        <div className="form-supplier">
+          <InputField
+            label="Company Name"
+            type="text"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Supplier Name"
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Register No"
+            type="text"
+            name="registerNo"
+            value={formData.registerNo}
+            onChange={handleChange}
+          />
+          <InputField label="Group Section" />
+          <InputField
+            label="Section"
+            type="text"
+            name="section"
+            value={formData.section}
+            onChange={handleChange}
+          />
         </div>
-
-        {/* Form Actions */}
-        <div className="form-actions">
-          <button className="btn btn-outline-success">Success</button>
-          <button className="btn btn-outline-warning">Warning</button>
+        <br />
+        <div className="form-supplier">
+          <InputField
+            label="Email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Phone"
+            type="text"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Address"
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+          />
+          <InputField
+            label="State"
+            type="text"
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+          />
+          <InputField
+            label="District"
+            type="text"
+            name="district"
+            value={formData.district}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Transportation"
+            type="text"
+            name="transportation"
+            value={formData.transportation}
+            onChange={handleChange}
+          />
+        </div>
+        <br />
+        <h5>Bank Details</h5>
+        <hr />
+        <div className="form-supplier">
+          <InputField
+            label="Account Holder Name"
+            type="text"
+            name="accHolderName"
+            value={formData.accHolderName}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Account No"
+            type="text"
+            name="accNo"
+            value={formData.accNo}
+            onChange={handleChange}
+          />
+          <InputField
+            label="IFSC Code"
+            type="text"
+            name="ifscCode"
+            value={formData.ifscCode}
+            onBlur={fetchBankDetails}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Bank Name"
+            type="text"
+            name="bankName"
+            value={formData.bankName}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Branch"
+            type="text"
+            name="branch"
+            value={formData.branch}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Name as per GST"
+            type="text"
+            name="gstName"
+            value={formData.gstName}
+            onChange={handleChange}
+          />
+          <InputField
+            label="GST No"
+            type="text"
+            name="gstNo"
+            value={formData.gstNo}
+            onChange={handleChange}
+          />
+          <InputField
+            label="PAN No"
+            type="text"
+            name="panNo"
+            value={formData.panNo}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="bu-group">
+          <button className="btn btn-success" onClick={handleSubmit}>
+            Submit
+          </button>
+          <button className="btn btn-warning">Cancel</button>
         </div>
       </div>
     </div>
