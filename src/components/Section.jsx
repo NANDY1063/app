@@ -127,6 +127,10 @@ const Section = () => {
               value={mu}
               onChange={(e) => setMu(e.target.value)}
             />
+            <div className="sec-check">
+            <label>QTY: <input type="radio"></input></label>
+            <label> MTR: <input type="radio"></input></label>
+            </div>
             {!isFirstRowSaved && (
               <div className="bu-group">
                 <button

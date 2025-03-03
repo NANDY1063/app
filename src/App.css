@@ -319,6 +319,10 @@ nav {
   height: 2rem;
   margin-left: 10px;
 }
+.sec-check input{
+  height:15px;
+  width:2rem;
+}
 
 /* BRANCH , BRAND , DESIGNCODE , HSNCODE , MODE CATEGORY , PAYMENT MACHINE , TRANSPORT ,*/
 .mode-column {
