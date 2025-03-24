@@ -5,6 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Sidebar from './components/Sidebar';
+import BillingScreen from './components/BillingScreen'
 import Dashboard from './components/Dashboard';  
 import Section from './components/Section';
 import Report from './components/Report';
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/masters/brand" element={<Brand/>}/>
             <Route path="/masters/role" element={<Role/>}/> 
             <Route path="/masters/branch" element={<Branch/>}/>
+            <Route path="/billing" element={<BillingScreen/>}/>
           </Route>
         </Routes>
       </div>
@@ -74,6 +76,7 @@ const LayoutWithSidebar = () => (
         <Route path="/masters/brand" element={<Brand/>}/>
         <Route path="/masters/role" element={<Role/>}/> 
         <Route path="/masters/branch" element={<Branch/>}/>
+        <Route path="/billing" element={<BillingScreen/>}/>
       </Routes>
     </div>
   </>
